@@ -1,0 +1,158 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const recentPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()).slice(0, 3);
+
+const socials = [
+	{ label: 'X (Twitter)', href: 'https://x.com/davenishantp' },
+	{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/nishant-p-dave/' },
+	{ label: 'GitHub', href: 'https://github.com/nishantdave' },
+];
+
+const focusAreas = [
+	'Artificial Intelligence',
+	'Machine Learning',
+	'Digital Transformation',
+	'Business Automation',
+	'Cloud-Native Platforms (AWS)',
+	'Application Modernization',
+	'Enterprise Architecture',
+	'Innovation Strategy',
+];
+---
+
+<Layout>
+	<!-- Hero -->
+	<section class="hero">
+		<div class="container hero-inner">
+			<div class="hero-photo">
+				<img src="/images/profile.jpg" alt="Nishant Dave" width="240" height="240" />
+			</div>
+			<div>
+				<span class="hero-tag">Keep innovating</span>
+				<h1>Nishant Dave</h1>
+				<p class="tagline">Technology Leader | Digital Transformation | AI Evangelist</p>
+				<p class="lede">
+					Welcome to my blog, where technology meets transformation. As a seasoned Technology
+					Leader with extensive experience in Digital Transformation, business automation, and a
+					passion for AI and ML, I explore the evolving intersection of technology and business.
+				</p>
+				<div class="hero-cta">
+					<a class="btn btn-primary" href="#contact">Let&rsquo;s build something together</a>
+					<a class="btn btn-ghost" href="#about">Learn more</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- About -->
+	<section id="about" class="section">
+		<div class="container about-grid">
+			<div class="about-text">
+				<h2 class="section-title">About</h2>
+				<p class="section-sub">Technology meets transformation.</p>
+				<p>
+					I am a solutions-oriented information technology professional with more than 12 years of
+					experience in architecture, development, and delivery of applications that improve
+					business processes using a wide range of technologies. As Director of Architecture &
+					Information Systems at Compass Group USA, I lead teams that put technology to work —
+					solving real business problems and enhancing efficiency.
+				</p>
+				<p>
+					My focus sits at the intersection of <strong>engineering execution and technology
+					strategy</strong>: AI adoption, application modernization, cloud-native platforms on
+					AWS, and enterprise architecture alignment. I help organizations modernize their
+					technology ecosystems and build scalable, resilient digital platforms — while translating
+					emerging technologies into practical business solutions.
+				</p>
+				<p>
+					I am passionate about <strong>responsible AI adoption</strong>, improving engineering
+					quality practices, and helping organizations successfully navigate large-scale digital
+					transformation. Through this blog, I share insights, strategies, and innovations that
+					empower organizations to thrive in the digital age.
+				</p>
+			</div>
+			<div class="card">
+				<h3>Areas of focus</h3>
+				<ul>
+					{
+						focusAreas.map((area) => (
+							<li>{area}</li>
+						))
+					}
+				</ul>
+			</div>
+		</div>
+	</section>
+
+	<!-- Insights -->
+	<section id="insights" class="section insights">
+		<div class="container">
+			<h2 class="section-title">What I write about</h2>
+			<p class="section-sub">Insights, strategies, and innovations at the intersection of technology and business.</p>
+			<div class="pill-row">
+				{
+					focusAreas.map((area) => (
+						<a class="pill" href="/blog">{area}</a>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<!-- Blog preview -->
+	<section id="blog" class="section">
+		<div class="container">
+			<h2 class="section-title">Recent posts</h2>
+			<p class="section-sub">Notes and articles on AI, automation, and digital transformation.</p>
+			{
+				recentPosts.length > 0 ? (
+					<div class="post-list">
+						{
+							recentPosts.map((post) => (
+								<article class="post-card">
+									<time datetime={post.data.pubDate.toISOString()}>
+										{post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+									</time>
+									<h3><a href={'/blog/' + post.id}>{post.data.title}</a></h3>
+									<p>{post.data.description}</p>
+									<a class="read-more" href={'/blog/' + post.id}>Read more →</a>
+								</article>
+							))
+						}
+					</div>
+				) : (
+					<p class="section-sub">No posts yet — check back soon.</p>
+				)
+			}
+		</div>
+	</section>
+
+	<!-- Contact -->
+	<section id="contact" class="section contact">
+		<div class="container contact-grid">
+			<div class="contact-cta">
+				<h2>Let&rsquo;s build something together.</h2>
+				<p>
+					Whether you&rsquo;re exploring AI adoption, modernizing your technology stack, or looking
+					for a strategic partner for digital transformation — I&rsquo;d love to hear from you.
+				</p>
+				<ul class="social-links">
+					{
+						socials.map((social) => (
+							<li>
+								<a href={social.href} target="_blank" rel="noopener noreferrer">{social.label}</a>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+			<div class="contact-email">
+				<h3>Get in touch</h3>
+				<a href="mailto:nishantp.dave@gmail.com">nishantp.dave@gmail.com</a>
+			</div>
+		</div>
+	</section>
+</Layout>

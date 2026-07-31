@@ -1,0 +1,35 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<Layout title="Blog — Nishant Dave">
+	<section class="section">
+		<div class="container">
+			<h1 class="section-title">Blog</h1>
+			<p class="section-sub">Notes and articles on AI, automation, and digital transformation.</p>
+			{
+				posts.length > 0 ? (
+					<div class="post-list">
+						{
+							posts.map((post) => (
+								<article class="post-card">
+									<time datetime={post.data.pubDate.toISOString()}>
+										{post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+									</time>
+									<h3><a href={'/blog/' + post.id}>{post.data.title}</a></h3>
+									<p>{post.data.description}</p>
+									<a class="read-more" href={'/blog/' + post.id}>Read more →</a>
+								</article>
+							))
+						}
+					</div>
+				) : (
+					<p class="section-sub">No posts yet — check back soon.</p>
+				)
+			}
+		</div>
+	</section>
+</Layout>
